@@ -1,0 +1,12 @@
+{
+  "name": "rimbos-mongo-cleaner",
+  "version": "1.0.0",
+  "description": "Node script for cleaning Rimbo's production database",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "fsarachu <fsarachu@gmail.com>",
+  "private": true,
+  "license": "ISC"
+}
