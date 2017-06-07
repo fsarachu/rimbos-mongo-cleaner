@@ -8,5 +8,8 @@
   },
   "author": "fsarachu <fsarachu@gmail.com>",
   "private": true,
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "mongodb": "^2.2.28"
+  }
 }
