@@ -10,6 +10,7 @@
   "private": true,
   "license": "ISC",
   "dependencies": {
+    "jsonfile": "^3.0.0",
     "mongodb": "^2.2.28"
   }
 }
