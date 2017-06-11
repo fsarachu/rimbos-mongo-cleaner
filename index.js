@@ -1,13 +1,6 @@
-const MongoClient = require('mongodb').MongoClient;
-const assert = require('assert');
+// Load environment variables from .env
+require('dotenv').config();
 
-// Connection URL
-let url = 'mongodb://localhost:27017/test';
+const mongoose = require('mongoose');
 
-// Use connect method to connect to the server
-MongoClient.connect(url, (err, db) => {
-    assert.equal(null, err);
-    console.log("Connected successfully to server");
-
-    db.close();
-});
+mongoose.connect(process.env.DB_URL);
