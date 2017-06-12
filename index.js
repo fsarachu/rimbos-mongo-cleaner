@@ -32,6 +32,8 @@ function findEvents(eventIds) {
             console.error(err);
         }
 
+        console.log(`-- ${events.length} Events Found --`);
+
         for (let event of events) {
             console.log(`Event: ${event.code} (${event.name})`);
             findEventPosts(event._id);
@@ -50,7 +52,7 @@ function findEventPosts(eventId) {
             console.error(err);
         }
 
-        console.log(`  -- Found ${posts.length} posts --`);
+        console.log(`  -- ${posts.length} Posts Found --`);
 
         for (let post of posts) {
             console.log(`  Post: ${post._id} - ${post.mediaUrl}`);
