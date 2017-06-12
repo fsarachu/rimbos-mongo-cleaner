@@ -78,6 +78,20 @@ function findPostComments(postIds) {
 }
 
 
+/**
+ * Deletes the requested events and their associated content.
+ * @param {ObjectId[]} eventIds - An array of events ObjectId's.
+ */
+function deleteEvents(eventIds) {
+    Event.deleteMany({_id: {$in: eventIds}}, (err, {result}) => {
+        if (err) {
+            console.error(err);
+        }
+
+        console.log(`--- ${result.n} Events Deleted ---`);
+    });
+}
+
 
 /**
  * Deletes all posts belonging to any of the specified events.
