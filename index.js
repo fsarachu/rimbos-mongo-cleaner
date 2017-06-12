@@ -15,7 +15,8 @@ mongoose.connect(process.env.DB_URL);
 const eventIds = jsonfile.readFileSync('toRemove.json');
 
 // Find events
-findEvents(eventIds.map(id => mongoose.Types.ObjectId(id)));
+// findEvents(eventIds.map(id => mongoose.Types.ObjectId(id)));
+deleteEvents(eventIds.map(id => mongoose.Types.ObjectId(id)));
 
 
 /**
@@ -72,6 +73,8 @@ function findPostComments(postIds) {
  * @param {ObjectId[]} eventIds - An array of events ObjectId's.
  */
 function deleteEvents(eventIds) {
+    deleteEventPosts(eventIds);
+
     Event.deleteMany({_id: {$in: eventIds}}, (err, {result}) => {
         if (err) {
             console.error(err);
@@ -87,6 +90,14 @@ function deleteEvents(eventIds) {
  * @param {ObjectId[]} eventIds - An array of events ObjectId's.
  */
 function deleteEventPosts(eventIds) {
+    EventPost.find({eventId: {$in: eventIds}}, (err, posts) => {
+        if (err) {
+            console.error(err);
+        }
+
+        deletePostComments(posts.map(p => mongoose.Types.ObjectId(p._id)))
+    });
+
     EventPost.deleteMany({eventId: {$in: eventIds}}, (err, {result}) => {
         if (err) {
             console.error(err);
