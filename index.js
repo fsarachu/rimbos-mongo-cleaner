@@ -3,6 +3,7 @@ require('dotenv').config();
 
 // Import stuff
 const mongoose = require('mongoose');
+const jsonfile = require('jsonfile');
 const Event = require('./models/event');
 const EventPost = require('./models/eventPost');
 
@@ -10,14 +11,7 @@ const EventPost = require('./models/eventPost');
 mongoose.connect(process.env.DB_URL);
 
 // Events to find
-const eventIds = [
-    '5751a55c71e57bd35090569c',
-    '5797b18d85f1fcf29da6d234',
-    '5797df439e8ba10f0086d964',
-    '57acbdf4b69e21e362bd2c5c',
-    '57c87dfddcba0f63c1cfd961',
-    '57fd1bb7d8a7f2da3ed553bf',
-];
+const eventIds = jsonfile.readFileSync('toRemove.json');
 
 // Find events
 findEvents(eventIds.map(id => mongoose.Types.ObjectId(id)));
