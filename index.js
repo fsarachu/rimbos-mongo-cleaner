@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 const jsonfile = require('jsonfile');
 const Event = require('./models/event');
 const EventPost = require('./models/eventPost');
+const PostComment = require('./models/postComment');
 
 // Connect to DB
 mongoose.connect(process.env.DB_URL);
@@ -51,6 +52,26 @@ function findEventPosts(eventIds) {
 
         for (let post of posts) {
             console.log(`  Post: ${post._id} - ${post.mediaUrl}`);
+        }
+
+        findPostComments(posts.map(p => p._id));
+    });
+}
+
+/**
+ * Finds all comments belonging to any of the specified event posts.
+ * @param {ObjectId[]} postIds - An array of event post ObjectId's.
+ */
+function findPostComments(postIds) {
+    PostComment.find({eventPostId: {$in: postIds}}, (err, comments) => {
+        if (err) {
+            console.error(err);
+        }
+
+        console.log(`    -- ${comments.length} Comments Found --`);
+
+        for (let comment of comments) {
+            console.log(`    Comment: ${comment._id} - ${comment.text}`);
         }
 
     });
