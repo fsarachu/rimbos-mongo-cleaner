@@ -29,9 +29,9 @@ function findEvents(eventIds) {
 
         console.log(`-- ${events.length} Events Found --`);
 
-        for (let event of events) {
-            console.log(`Event: ${event.code} (${event.name})`);
-        }
+        // for (let event of events) {
+        //     console.log(`Event: ${event.code} (${event.name})`);
+        // }
 
         findEventPosts(events.map(e => e._id));
     });
@@ -48,11 +48,11 @@ function findEventPosts(eventIds) {
             console.error(err);
         }
 
-        console.log(`  -- ${posts.length} Posts Found --`);
+        console.log(`-- ${posts.length} Posts Found --`);
 
-        for (let post of posts) {
-            console.log(`  Post: ${post._id} - ${post.mediaUrl}`);
-        }
+        // for (let post of posts) {
+        //     console.log(`  Post: ${post._id} - ${post.mediaUrl}`);
+        // }
 
         findPostComments(posts.map(p => p._id));
     });
@@ -68,11 +68,11 @@ function findPostComments(postIds) {
             console.error(err);
         }
 
-        console.log(`    -- ${comments.length} Comments Found --`);
+        console.log(`-- ${comments.length} Comments Found --`);
 
-        for (let comment of comments) {
-            console.log(`    Comment: ${comment._id} - ${comment.text}`);
-        }
+        // for (let comment of comments) {
+        //     console.log(`    Comment: ${comment._id} - ${comment.text}`);
+        // }
 
     });
 }
