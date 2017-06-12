@@ -77,6 +77,23 @@ function findPostComments(postIds) {
     });
 }
 
+
+
+/**
+ * Deletes all posts belonging to any of the specified events.
+ * @param {ObjectId[]} eventIds - An array of events ObjectId's.
+ */
+function deleteEventPosts(eventIds) {
+    EventPost.deleteMany({eventId: {$in: eventIds}}, (err, {result}) => {
+        if (err) {
+            console.error(err);
+        }
+
+        console.log(`--- ${result.n} Posts Deleted ---`);
+    });
+}
+
+
 /**
  * Deletes all comments belonging to any of the specified event posts.
  * @param {ObjectId[]} postIds - An array of event post ObjectId's.
