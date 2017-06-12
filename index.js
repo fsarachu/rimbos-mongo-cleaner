@@ -4,6 +4,10 @@ require('dotenv').config();
 // Import stuff
 const mongoose = require('mongoose');
 const jsonfile = require('jsonfile');
+const log = require('simple-node-logger').createSimpleLogger({
+    logFilePath:'cleaner.log',
+    timestampFormat:'YYYY-MM-DD HH:mm:ss.SSS',
+});
 const Event = require('./models/event');
 const EventPost = require('./models/eventPost');
 const PostComment = require('./models/postComment');
@@ -15,8 +19,8 @@ mongoose.connect(process.env.DB_URL);
 const eventIds = jsonfile.readFileSync('toRemove.json');
 
 // Find events
-// findEvents(eventIds.map(id => mongoose.Types.ObjectId(id)));
-deleteEvents(eventIds.map(id => mongoose.Types.ObjectId(id)));
+findEvents(eventIds.map(id => mongoose.Types.ObjectId(id)));
+// deleteEvents(eventIds.map(id => mongoose.Types.ObjectId(id)));
 
 
 /**
@@ -26,10 +30,10 @@ deleteEvents(eventIds.map(id => mongoose.Types.ObjectId(id)));
 function findEvents(eventIds) {
     Event.find({_id: {$in: eventIds}}, (err, events) => {
         if (err) {
-            console.error(err);
+            log.error(err);
         }
 
-        console.log(`--- ${events.length} Events Found ---`);
+        log.info(`${events.length} Events Found`);
 
         findEventPosts(events.map(e => e._id));
     });
@@ -43,10 +47,10 @@ function findEvents(eventIds) {
 function findEventPosts(eventIds) {
     EventPost.find({eventId: {$in: eventIds}}, (err, posts) => {
         if (err) {
-            console.error(err);
+            log.error(err);
         }
 
-        console.log(`--- ${posts.length} Posts Found ---`);
+        log.info(`${posts.length} Posts Found`);
 
         findPostComments(posts.map(p => p._id));
     });
@@ -60,10 +64,10 @@ function findEventPosts(eventIds) {
 function findPostComments(postIds) {
     PostComment.find({eventPostId: {$in: postIds}}, (err, comments) => {
         if (err) {
-            console.error(err);
+            log.error(err);
         }
 
-        console.log(`--- ${comments.length} Comments Found ---`);
+        log.info(`${comments.length} Comments Found`);
     });
 }
 
@@ -77,10 +81,10 @@ function deleteEvents(eventIds) {
 
     Event.deleteMany({_id: {$in: eventIds}}, (err, {result}) => {
         if (err) {
-            console.error(err);
+            log.error(err);
         }
 
-        console.log(`--- ${result.n} Events Deleted ---`);
+        log.info(`${result.n} Events Deleted`);
     });
 }
 
@@ -92,7 +96,7 @@ function deleteEvents(eventIds) {
 function deleteEventPosts(eventIds) {
     EventPost.find({eventId: {$in: eventIds}}, (err, posts) => {
         if (err) {
-            console.error(err);
+            log.error(err);
         }
 
         deletePostComments(posts.map(p => mongoose.Types.ObjectId(p._id)))
@@ -100,10 +104,10 @@ function deleteEventPosts(eventIds) {
 
     EventPost.deleteMany({eventId: {$in: eventIds}}, (err, {result}) => {
         if (err) {
-            console.error(err);
+            log.error(err);
         }
 
-        console.log(`--- ${result.n} Posts Deleted ---`);
+        log.info(`${result.n} Posts Deleted`);
     });
 }
 
@@ -115,9 +119,9 @@ function deleteEventPosts(eventIds) {
 function deletePostComments(postIds) {
     PostComment.deleteMany({eventPostId: {$in: postIds}}, (err, {result}) => {
         if (err) {
-            console.error(err);
+            log.error(err);
         }
 
-        console.log(`--- ${result.n} Comments Deleted ---`);
+        log.info(`${result.n} Comments Deleted`);
     });
 }
