@@ -30,18 +30,19 @@ function findEvents(eventIds) {
 
         for (let event of events) {
             console.log(`Event: ${event.code} (${event.name})`);
-            findEventPosts(event._id);
         }
+
+        findEventPosts(events.map(e => e._id));
     });
 }
 
 
 /**
- * Finds all posts that belong to an event.
- * @param {ObjectId} eventId - The event id.
+ * Finds all posts belonging to any of the specified events.
+ * @param {ObjectId[]} eventIds - An array of events ObjectId's.
  */
-function findEventPosts(eventId) {
-    EventPost.find({eventId}, (err, posts) => {
+function findEventPosts(eventIds) {
+    EventPost.find({eventId: {$in: eventIds}}, (err, posts) => {
         if (err) {
             console.error(err);
         }
