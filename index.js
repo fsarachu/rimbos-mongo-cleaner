@@ -17,6 +17,7 @@ const eventIds = jsonfile.readFileSync('toRemove.json');
 // Find events
 findEvents(eventIds.map(id => mongoose.Types.ObjectId(id)));
 
+
 /**
  * Find the requested events and their associated content.
  * @param {ObjectId[]} eventIds - An array of events ObjectId's.
@@ -27,11 +28,7 @@ function findEvents(eventIds) {
             console.error(err);
         }
 
-        console.log(`-- ${events.length} Events Found --`);
-
-        // for (let event of events) {
-        //     console.log(`Event: ${event.code} (${event.name})`);
-        // }
+        console.log(`--- ${events.length} Events Found ---`);
 
         findEventPosts(events.map(e => e._id));
     });
@@ -48,15 +45,12 @@ function findEventPosts(eventIds) {
             console.error(err);
         }
 
-        console.log(`-- ${posts.length} Posts Found --`);
-
-        // for (let post of posts) {
-        //     console.log(`  Post: ${post._id} - ${post.mediaUrl}`);
-        // }
+        console.log(`--- ${posts.length} Posts Found ---`);
 
         findPostComments(posts.map(p => p._id));
     });
 }
+
 
 /**
  * Finds all comments belonging to any of the specified event posts.
@@ -68,12 +62,7 @@ function findPostComments(postIds) {
             console.error(err);
         }
 
-        console.log(`-- ${comments.length} Comments Found --`);
-
-        // for (let comment of comments) {
-        //     console.log(`    Comment: ${comment._id} - ${comment.text}`);
-        // }
-
+        console.log(`--- ${comments.length} Comments Found ---`);
     });
 }
 
