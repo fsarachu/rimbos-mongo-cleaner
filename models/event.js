@@ -8,7 +8,7 @@ const eventSchema = new mongoose.Schema({
 });
 
 eventSchema.pre('remove', function(next) {
-    EventPost.find({eventPostId: this._id}, (err, posts) => {
+    EventPost.find({eventId: this._id}, (err, posts) => {
         if(err) {
             log.error(err);
         }
