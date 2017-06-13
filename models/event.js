@@ -1,8 +1,23 @@
 const mongoose = require('mongoose');
+const EventPost = require('./eventPost');
 
-const schema = new mongoose.Schema({
+const eventSchema = new mongoose.Schema({
     code: String,
     name: String,
 });
 
-module.exports = mongoose.model('Event', schema, 'events');
+eventSchema.pre('remove', function(next) {
+    EventPost.find({eventPostId: this._id}, (err, posts) => {
+        if(err) {
+            console.error(err);
+        }
+
+        for (let post of posts) {
+            post.remove();
+        }
+
+        next();
+    });
+});
+
+module.exports = mongoose.model('Event', eventSchema, 'events');
