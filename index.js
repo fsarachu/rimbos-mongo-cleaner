@@ -4,10 +4,7 @@ require('dotenv').config();
 // Import stuff
 const mongoose = require('mongoose');
 const jsonfile = require('jsonfile');
-const log = require('simple-node-logger').createSimpleLogger({
-    logFilePath: 'cleaner.log',
-    timestampFormat: 'YYYY-MM-DD HH:mm:ss.SSS',
-});
+const log = require('./helpers/log');
 const Event = require('./models/event');
 const EventPost = require('./models/eventPost');
 const PostComment = require('./models/postComment');
