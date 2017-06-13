@@ -5,12 +5,15 @@ require('dotenv').config();
 const mongoose = require('mongoose');
 const jsonfile = require('jsonfile');
 const log = require('simple-node-logger').createSimpleLogger({
-    logFilePath:'cleaner.log',
-    timestampFormat:'YYYY-MM-DD HH:mm:ss.SSS',
+    logFilePath: 'cleaner.log',
+    timestampFormat: 'YYYY-MM-DD HH:mm:ss.SSS',
 });
 const Event = require('./models/event');
 const EventPost = require('./models/eventPost');
 const PostComment = require('./models/postComment');
+
+// Logfile separator
+log.info('---------------------------------------------------');
 
 // Connect to DB
 mongoose.connect(process.env.DB_URL);
