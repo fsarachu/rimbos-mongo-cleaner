@@ -24,4 +24,6 @@ eventSchema.pre('remove', function (next) {
     });
 });
 
+eventSchema.post('remove', removed => log.info(`Event ${removed._id} has been removed`));
+
 module.exports = mongoose.model('Event', eventSchema, 'events');
