@@ -1,19 +1,20 @@
 const mongoose = require('mongoose');
 const EventPost = require('./eventPost');
-const log = require('../helpers/log');
+const log = require('simple-node-logger').createSimpleLogger({
+    logFilePath: './log/Event.log',
+    timestampFormat: 'YYYY-MM-DD HH:mm:ss.SSS',
+});
 
 const eventSchema = new mongoose.Schema({
     code: String,
     name: String,
 });
 
-eventSchema.pre('remove', function(next) {
+eventSchema.pre('remove', function (next) {
     EventPost.find({eventId: this._id}, (err, posts) => {
-        if(err) {
+        if (err) {
             log.error(err);
         }
-
-        log.info(`${posts.length} Posts to be removed`);
 
         for (let post of posts) {
             post.remove();
