@@ -4,11 +4,11 @@ const log = require('simple-node-logger').createSimpleLogger({
     timestampFormat: 'YYYY-MM-DD HH:mm:ss.SSS',
 });
 
-const schema = new mongoose.Schema({
+const postCommentSchema = new mongoose.Schema({
     'eventPostId': mongoose.Schema.ObjectId,
     'text': String,
 });
 
-eventPostSchema.post('remove', removed => log.info(`Post ${removed._id} has been removed`));
+postCommentSchema.post('remove', removed => log.info(`Comment ${removed._id} has been removed`));
 
-module.exports = mongoose.model('PostComment', schema, 'postcomments');
+module.exports = mongoose.model('PostComment', postCommentSchema, 'postcomments');
