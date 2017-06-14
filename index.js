@@ -73,55 +73,17 @@ function findPostComments(postIds) {
 
 
 /**
- * Deletes the requested events and their associated content.
+ * Deletes the requested events (and their associated content via mongoose model middleware).
  * @param {ObjectId[]} eventIds - An array of events ObjectId's.
  */
 function deleteEvents(eventIds) {
-    deleteEventPosts(eventIds);
-
-    Event.deleteMany({_id: {$in: eventIds}}, (err, {result}) => {
+    Event.find({_id: {$in: eventIds}}, (err, events) => {
         if (err) {
             log.error(err);
         }
 
-        log.info(`${result.n} Events Deleted`);
-    });
-}
-
-
-/**
- * Deletes all posts belonging to any of the specified events.
- * @param {ObjectId[]} eventIds - An array of events ObjectId's.
- */
-function deleteEventPosts(eventIds) {
-    EventPost.find({eventId: {$in: eventIds}}, (err, posts) => {
-        if (err) {
-            log.error(err);
+        for (let event of events) {
+            event.remove();
         }
-
-        deletePostComments(posts.map(p => mongoose.Types.ObjectId(p._id)))
-    });
-
-    EventPost.deleteMany({eventId: {$in: eventIds}}, (err, {result}) => {
-        if (err) {
-            log.error(err);
-        }
-
-        log.info(`${result.n} Posts Deleted`);
-    });
-}
-
-
-/**
- * Deletes all comments belonging to any of the specified event posts.
- * @param {ObjectId[]} postIds - An array of event post ObjectId's.
- */
-function deletePostComments(postIds) {
-    PostComment.deleteMany({eventPostId: {$in: postIds}}, (err, {result}) => {
-        if (err) {
-            log.error(err);
-        }
-
-        log.info(`${result.n} Comments Deleted`);
     });
 }
