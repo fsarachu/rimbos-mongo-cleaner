@@ -117,7 +117,7 @@ function findOrphanPosts() {
                 postsProcessed += 1;
 
                 if (postsProcessed === posts.length) {
-                    setTimeout(() => console.log('Done!'), 0);
+                    console.log('Done!');
                 }
             });
 

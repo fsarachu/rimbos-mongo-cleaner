@@ -1,4 +1,4 @@
 require('dotenv').config();
-const deleteOrphanPosts = require('./functions').deleteOrphanPosts;
+const findOrphanPosts = require('./functions').findOrphanPosts;
 
-deleteOrphanPosts();
+findOrphanPosts();
