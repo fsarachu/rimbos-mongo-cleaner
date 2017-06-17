@@ -103,6 +103,8 @@ function findOrphanPosts() {
 
     allPosts.then(posts => {
 
+        let postsProcessed = 0;
+
         for (let post of posts) {
 
             let event = Event.findById(post.eventId).exec();
@@ -110,6 +112,37 @@ function findOrphanPosts() {
             event.then(event => {
                 if (!event) {
                     console.log(`${post._id} is orphan. It belongs to the event ${post.eventId}`);
+                }
+
+                postsProcessed += 1;
+
+                if (postsProcessed === posts.length) {
+                    setTimeout(() => console.log('Done!'), 0);
+                }
+            });
+
+        }
+
+    })
+}
+
+
+/**
+ * Deletes event posts that belongs to a non existing event.
+ */
+function deleteOrphanPosts() {
+
+    let allPosts = EventPost.find().exec();
+
+    allPosts.then(posts => {
+
+        for (let post of posts) {
+
+            let event = Event.findById(post.eventId).exec();
+
+            event.then(event => {
+                if (!event) {
+                    post.remove();
                 }
             });
 
@@ -122,4 +155,5 @@ module.exports = {
     findEvents,
     deleteEvents,
     findOrphanPosts,
+    deleteOrphanPosts,
 };
