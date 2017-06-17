@@ -1,4 +1,4 @@
 require('dotenv').config();
-const findOrphanComments = require('./functions').findOrphanComments;
+const deleteOrphanComments = require('./functions').deleteOrphanComments;
 
-findOrphanComments();
+deleteOrphanComments();
