@@ -132,6 +132,7 @@ function findOrphanPosts() {
  */
 function deleteOrphanPosts() {
 
+    let postsProcessed = 0;
     let allPosts = EventPost.find().exec();
 
     allPosts.then(posts => {
@@ -142,7 +143,15 @@ function deleteOrphanPosts() {
 
             event.then(event => {
                 if (!event) {
-                    post.remove();
+                    post.remove().then(() => {
+                        postsProcessed += 1;
+
+                        if (postsProcessed === posts.length) {
+                            console.log('Done!');
+                        }
+                    });
+                } else {
+                    postsProcessed += 1;
                 }
             });
 
