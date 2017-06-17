@@ -1,3 +1,5 @@
+// Import stuff
+const mongoose = require('mongoose');
 const log = require('simple-node-logger').createSimpleLogger({
     logFilePath: './log/Index.log',
     timestampFormat: 'YYYY-MM-DD HH:mm:ss.SSS',
@@ -5,6 +7,13 @@ const log = require('simple-node-logger').createSimpleLogger({
 const Event = require('./models/event');
 const EventPost = require('./models/eventPost');
 const PostComment = require('./models/postComment');
+
+// Connect to DB
+mongoose.connect(process.env.DB_URL);
+
+// Set mongoose promises to native promises
+mongoose.Promise = global.Promise;
+
 
 /**
  * Find the requested events and their associated content.
@@ -71,7 +80,25 @@ function deleteEvents(eventIds) {
     });
 }
 
+/**
+ * Finds event posts that belongs to a non existing event.
+ */
+function findOrphanPosts() {
+    let allPosts = EventPost.find().exec();
+    allPosts.then(posts => {
+        for (let post of posts) {
+            let event = Event.findById(post.eventId).exec();
+            event.then(event => {
+                if (!event) {
+                    console.log(`${post._id} is orphan. It belongs to the event ${post.eventId}`);
+                }
+            });
+        }
+    })
+}
+
 module.exports = {
     findEvents,
-    deleteEvents
+    deleteEvents,
+    findOrphanPosts,
 };
