@@ -16,7 +16,7 @@ mongoose.Promise = global.Promise;
 
 
 /**
- * Find the requested events and their associated content.
+ * Finds the requested events and their associated content.
  * @param {ObjectId[]} eventIds - An array of events ObjectId's.
  */
 function findEvents(eventIds) {
@@ -35,7 +35,7 @@ function findEvents(eventIds) {
 
 
 /**
- * Finds all posts belonging to any of the specified events.
+ * Finds all posts that belong to any of the specified events.
  * @param {ObjectId[]} eventIds - An array of events ObjectId's.
  */
 function findEventPosts(eventIds) {
@@ -56,7 +56,7 @@ function findEventPosts(eventIds) {
 
 
 /**
- * Finds all comments belonging to any of the specified event posts.
+ * Finds all comments that belong to any of the specified event posts.
  * @param {ObjectId[]} postIds - An array of event post ObjectId's.
  */
 function findPostComments(postIds) {
@@ -95,7 +95,7 @@ function deleteEvents(eventIds) {
 
 
 /**
- * Finds event posts that belongs to a non existing event.
+ * Finds event posts that belong to a non existing event.
  */
 function findOrphanPosts() {
 
@@ -128,7 +128,7 @@ function findOrphanPosts() {
 
 
 /**
- * Deletes event posts that belongs to a non existing event.
+ * Deletes event posts that belong to a non existing event.
  */
 function deleteOrphanPosts() {
 
