@@ -160,9 +160,44 @@ function deleteOrphanPosts() {
     })
 }
 
+
+/**
+ * Finds comments that belong to a non existing post.
+ */
+function findOrphanComments() {
+
+    let allComments = PostComment.find().exec();
+
+    allComments.then(comments => {
+
+        let commentsProcessed = 0;
+
+        for (let comment of comments) {
+
+            let post = EventPost.findById(comment.eventPostId).exec();
+
+            post.then(post => {
+                if (!post) {
+                    console.log(`${comment._id} is orphan. It belongs to the post ${comment.eventPostId}`);
+                }
+
+                commentsProcessed += 1;
+
+                if (commentsProcessed === comments.length) {
+                    console.log('Done!');
+                }
+            });
+
+        }
+
+    })
+}
+
+
 module.exports = {
     findEvents,
     deleteEvents,
     findOrphanPosts,
     deleteOrphanPosts,
+    findOrphanComments,
 };

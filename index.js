@@ -1,4 +1,4 @@
 require('dotenv').config();
-const findOrphanPosts = require('./functions').findOrphanPosts;
+const findOrphanComments = require('./functions').findOrphanComments;
 
-findOrphanPosts();
+findOrphanComments();
