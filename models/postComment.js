@@ -5,8 +5,13 @@ const log = require('simple-node-logger').createSimpleLogger({
 });
 
 const postCommentSchema = new mongoose.Schema({
-    'eventPostId': mongoose.Schema.ObjectId,
-    'text': String,
+    eventPostId: mongoose.Schema.Types.ObjectId,
+    userId: mongoose.Schema.Types.ObjectId,
+    date: Date,
+    text: String,
+    archived: Boolean,
+    createdAt: Date,
+    updatedAt: Date
 });
 
 postCommentSchema.post('remove', removed => log.info(`Comment ${removed._id} has been removed`));
