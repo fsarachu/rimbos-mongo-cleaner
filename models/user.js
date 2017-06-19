@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
     name: String,
-    fistname: String,
+    fistname: String, // Typo!
     lastname: String,
     email: String,
     userRelationship: String,
