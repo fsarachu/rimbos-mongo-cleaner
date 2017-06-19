@@ -6,8 +6,22 @@ const log = require('simple-node-logger').createSimpleLogger({
 });
 
 const eventPostSchema = new mongoose.Schema({
-    'eventId': mongoose.Schema.Types.ObjectId,
-    'mediaUrl': String,
+    eventId: mongoose.Schema.Types.ObjectId,
+    description: String,
+    mediaUrl: String,
+    mediaType: String,
+    userId: mongoose.Schema.Types.ObjectId,
+    archived: Boolean,
+    archivedBy: mongoose.Schema.Types.ObjectId,
+    commentQty: Number,
+    emotions: [
+        {
+            emotionType: String,
+            users: [mongoose.Schema.Types.ObjectId]
+        }
+    ],
+    createdAt: Date,
+    updatedAt: Date
 });
 
 eventPostSchema.pre('remove', function (next) {
