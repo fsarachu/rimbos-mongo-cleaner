@@ -271,6 +271,27 @@ function findDocsWithExtraFields(Model) {
 }
 
 
+function normalizeDocsWithExtraFields(Model) {
+    return findDocsWithExtraFields(Model).then((docs) => {
+
+        let promises = [];
+
+        for (let doc of docs) {
+
+            for (let field of doc.extraFields) {
+
+                let p = Model.update({_id: doc.model._id}, {$unset: {[field]: ''}}).exec();
+                promises.push(p);
+
+            }
+
+        }
+
+        return Promise.all(promises);
+    });
+}
+
+
 module.exports = {
     findEvents,
     deleteEvents,
@@ -279,4 +300,5 @@ module.exports = {
     findOrphanComments,
     deleteOrphanComments,
     findDocsWithExtraFields,
+    normalizeDocsWithExtraFields,
 };
