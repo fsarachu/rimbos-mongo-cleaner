@@ -225,7 +225,7 @@ function deleteOrphanComments() {
 /**
  * Finds documents containing fields not specified in the the mongoose schema belonging to the model.
  * @param {mongoose.model} Model.
- * @returns {Promise} - A promise that resolves to an array of objects with the keys "id" (String) and "extraFields" ([String]).
+ * @returns {Promise} - A promise that resolves to an array of objects with the keys "model" (mongoose model instance) and "extraFields" ([String]).
  */
 function findDocsWithExtraFields(Model) {
     let schemaFields = Object.keys(Model.schema.paths);
@@ -259,7 +259,7 @@ function findDocsWithExtraFields(Model) {
 
             if (extraFields.length !== 0) {
                 dirtyDocs.push({
-                    documentId: String(model._id),
+                    model,
                     extraFields,
                 });
             }
@@ -269,6 +269,7 @@ function findDocsWithExtraFields(Model) {
         return Promise.resolve(dirtyDocs);
     });
 }
+
 
 module.exports = {
     findEvents,

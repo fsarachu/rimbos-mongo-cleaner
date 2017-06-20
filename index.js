@@ -21,7 +21,7 @@ findDocsWithExtraFields(Model).then((docs) => {
             extraFieldsString += `${field}${(index === arr.length - 1) ? '' : ', '}`;
         });
 
-        console.log(`${doc.documentId}: ${extraFieldsString}.`);
+        console.log(`${doc.model._id}: ${extraFieldsString}.`);
 
     }
 
