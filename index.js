@@ -1,7 +1,7 @@
 // Import stuff
 require('dotenv').config();
 const mongoose = require('mongoose');
-const Model = require('./models/event');
+const Model = require('./models/eventPost');
 const findDocsWithExtraFields = require('./functions').findDocsWithExtraFields;
 const normalizeDocsWithExtraFields = require('./functions').normalizeDocsWithExtraFields;
 
@@ -30,4 +30,7 @@ mongoose.Promise = global.Promise;
 //     process.exit();
 // });
 
-normalizeDocsWithExtraFields(Model).then(() => console.log('> Documents normalized'));
+normalizeDocsWithExtraFields(Model).then(() => {
+    console.log('> Documents normalized');
+    process.exit();
+});
