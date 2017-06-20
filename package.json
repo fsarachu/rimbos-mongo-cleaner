@@ -4,6 +4,7 @@
   "description": "Node script for cleaning Rimbo's production database",
   "main": "index.js",
   "scripts": {
+    "start": "node index",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "fsarachu <fsarachu@gmail.com>",
