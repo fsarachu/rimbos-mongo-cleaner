@@ -280,7 +280,7 @@ function normalizeDocsWithExtraFields(Model) {
 
             for (let field of doc.extraFields) {
 
-                let p = Model.update({_id: doc.model._id}, {$unset: {[field]: ''}}).exec();
+                let p = Model.collection.update({_id: doc.model._id}, {$unset: {[field]: ''}});
                 promises.push(p);
 
             }
