@@ -270,7 +270,11 @@ function findDocsWithExtraFields(Model) {
     });
 }
 
-
+/**
+ * Normalizes documents containing fields not specified in the the mongoose schema belonging to the model.
+ * @param {mongoose.model} Model.
+ * @returns {Promise}
+ */
 function normalizeDocsWithExtraFields(Model) {
     return findDocsWithExtraFields(Model).then((docs) => {
 
