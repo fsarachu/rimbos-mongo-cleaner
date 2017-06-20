@@ -1,8 +1,8 @@
 // Import stuff
 require('dotenv').config();
 const mongoose = require('mongoose');
-const Event = require('./models/event');
-const findDocumentsWithExtraFields = require('./functions').findDocumentsWithExtraFields(Event);
+const Model = require('./models/event');
+const findDocsWithExtraFields = require('./functions').findDocsWithExtraFields;
 
 // Connect to DB
 mongoose.connect(process.env.DB_URL);
@@ -11,6 +11,20 @@ mongoose.connect(process.env.DB_URL);
 mongoose.Promise = global.Promise;
 
 // Find documents with extra fields
-findDocumentsWithExtraFields.then((docs) => {
-    console.dir(docs);
+findDocsWithExtraFields(Model).then((docs) => {
+
+    for (let doc of docs) {
+
+        let extraFieldsString = '';
+
+        doc.extraFields.forEach((field, index, arr) => {
+            extraFieldsString += `${field}${(index === arr.length - 1) ? '' : ', '}`;
+        });
+
+        console.log(`${doc.documentId}: ${extraFieldsString}.`);
+
+    }
+
+    console.log(`\n> Found ${docs.length} documents with extra fields.`);
+    process.exit();
 });

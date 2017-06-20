@@ -225,23 +225,49 @@ function deleteOrphanComments() {
 /**
  * Finds documents containing fields not specified in the the mongoose schema belonging to the model.
  * @param {mongoose.model} Model.
- * @returns {Promise} - A promise that resolves to an array of objects with the keys "id" (String)
- * and "extraFields" ([String]).
+ * @returns {Promise} - A promise that resolves to an array of objects with the keys "id" (String) and "extraFields" ([String]).
  */
-function findDocumentsWithExtraFields(Model) {
-    let p1 = new Promise(resolve => setTimeout(() => {
-        console.log('Resolved p1');
-        resolve('hello');
-    }, 4000));
+function findDocsWithExtraFields(Model) {
+    let schemaFields = Object.keys(Model.schema.paths);
+    let findModels = Model.find().exec();
 
-    let p2 = p1.then(data => {
-        console.log('Pending p2');
-        return new Promise((resolve) => {
-            setTimeout(() => resolve(`${data} world!`), 3000)
-        }, 3000);
+    return findModels.then((models) => {
+
+        let dirtyDocs = [];
+
+        for (let model of models) {
+
+            let docFields = Object.keys(model._doc);
+            let extraFields = [];
+
+            for (let docField of docFields) {
+
+                let isExtraField = true;
+
+                for (let schemaField of schemaFields) {
+                    if (docField === schemaField) {
+                        isExtraField = false;
+                        break;
+                    }
+                }
+
+                if (isExtraField) {
+                    extraFields.push(docField);
+                }
+
+            }
+
+            if (extraFields.length !== 0) {
+                dirtyDocs.push({
+                    documentId: String(model._id),
+                    extraFields,
+                });
+            }
+
+        }
+
+        return Promise.resolve(dirtyDocs);
     });
-
-    return p2;
 }
 
 module.exports = {
@@ -251,5 +277,5 @@ module.exports = {
     deleteOrphanPosts,
     findOrphanComments,
     deleteOrphanComments,
-    findDocumentsWithExtraFields,
+    findDocsWithExtraFields,
 };
