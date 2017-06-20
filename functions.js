@@ -3,7 +3,7 @@ const log = require('simple-node-logger').createSimpleLogger({
     logFilePath: './log/Index.log',
     timestampFormat: 'YYYY-MM-DD HH:mm:ss.SSS',
 });
-const Event = require('./models/event');
+const Model = require('./models/event');
 const EventPost = require('./models/eventPost');
 const PostComment = require('./models/postComment');
 
@@ -13,7 +13,7 @@ const PostComment = require('./models/postComment');
  * @param {ObjectId[]} eventIds - An array of events ObjectId's.
  */
 function findEvents(eventIds) {
-    Event.find({_id: {$in: eventIds}}, (err, events) => {
+    Model.find({_id: {$in: eventIds}}, (err, events) => {
 
         if (err) {
             log.error(err);
@@ -72,7 +72,7 @@ function findPostComments(postIds) {
  */
 function deleteEvents(eventIds) {
 
-    Event.find({_id: {$in: eventIds}}, (err, events) => {
+    Model.find({_id: {$in: eventIds}}, (err, events) => {
 
         if (err) {
             log.error(err);
@@ -100,7 +100,7 @@ function findOrphanPosts() {
 
         for (let post of posts) {
 
-            let event = Event.findById(post.eventId).exec();
+            let event = Model.findById(post.eventId).exec();
 
             event.then(event => {
                 if (!event) {
@@ -132,7 +132,7 @@ function deleteOrphanPosts() {
 
         for (let post of posts) {
 
-            let event = Event.findById(post.eventId).exec();
+            let event = Model.findById(post.eventId).exec();
 
             event.then(event => {
                 if (!event) {
@@ -222,6 +222,28 @@ function deleteOrphanComments() {
 }
 
 
+/**
+ * Finds documents containing fields not specified in the the mongoose schema belonging to the model.
+ * @param {mongoose.model} Model.
+ * @returns {Promise} - A promise that resolves to an array of objects with the keys "id" (String)
+ * and "extraFields" ([String]).
+ */
+function findDocumentsWithExtraFields(Model) {
+    let p1 = new Promise(resolve => setTimeout(() => {
+        console.log('Resolved p1');
+        resolve('hello');
+    }, 4000));
+
+    let p2 = p1.then(data => {
+        console.log('Pending p2');
+        return new Promise((resolve) => {
+            setTimeout(() => resolve(`${data} world!`), 3000)
+        }, 3000);
+    });
+
+    return p2;
+}
+
 module.exports = {
     findEvents,
     deleteEvents,
@@ -229,4 +251,5 @@ module.exports = {
     deleteOrphanPosts,
     findOrphanComments,
     deleteOrphanComments,
+    findDocumentsWithExtraFields,
 };
