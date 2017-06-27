@@ -296,6 +296,38 @@ function normalizeDocsWithExtraFields(Model) {
 }
 
 
+/**
+ * Replaces "http" urls with "https"
+ * @param {mongoose.model} Model.
+ * @param {String} urlField
+ * @param {RegExp} needle
+ * @param {String} replace
+ * @returns {Promise}
+ */
+function upgradeUrlsToHttps(Model, urlField, needle = /^http:\/\/s3/, replace = 'https://s3') {
+
+    let findDirtyDocs = Model.find({[urlField]: needle}).exec();
+
+    let updateAllDocs = findDirtyDocs.then((docs) => {
+
+        let updateAllDocs = docs.map((doc) => {
+            let newUrl = doc[urlField].replace(needle, replace);
+
+            console.log(`Replacing ${doc[urlField]} with ${newUrl}`);
+
+            doc[urlField] = newUrl;
+
+            return doc.save();
+        });
+
+        return Promise.all(updateAllDocs);
+    });
+
+    return updateAllDocs;
+
+}
+
+
 module.exports = {
     findEvents,
     deleteEvents,
@@ -305,4 +337,5 @@ module.exports = {
     deleteOrphanComments,
     findDocsWithExtraFields,
     normalizeDocsWithExtraFields,
+    upgradeUrlsToHttps,
 };

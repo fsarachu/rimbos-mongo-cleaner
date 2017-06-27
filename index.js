@@ -2,8 +2,7 @@
 require('dotenv').config();
 const mongoose = require('mongoose');
 const Model = require('./models/eventPost');
-const findDocsWithExtraFields = require('./functions').findDocsWithExtraFields;
-const normalizeDocsWithExtraFields = require('./functions').normalizeDocsWithExtraFields;
+const upgradeUrlsToHttps = require('./functions').upgradeUrlsToHttps;
 
 // Connect to DB
 mongoose.connect(process.env.DB_URL);
@@ -11,26 +10,10 @@ mongoose.connect(process.env.DB_URL);
 // Set mongoose promises to native promises
 mongoose.Promise = global.Promise;
 
-// Find documents with extra fields
-// findDocsWithExtraFields(Model).then((docs) => {
-//
-//     for (let doc of docs) {
-//
-//         let extraFieldsString = '';
-//
-//         doc.extraFields.forEach((field, index, arr) => {
-//             extraFieldsString += `${field}${(index === arr.length - 1) ? '' : ', '}`;
-//         });
-//
-//         console.log(`${doc.model._id}: ${extraFieldsString}.`);
-//
-//     }
-//
-//     console.log(`\n> Found ${docs.length} documents with extra fields.`);
-//     process.exit();
-// });
+// Update "http://" urls to "https://"
+let urlField = 'mediaUrl';
 
-normalizeDocsWithExtraFields(Model).then(() => {
-    console.log('> Documents normalized');
+upgradeUrlsToHttps(Model, urlField).then((updateResults) => {
+    console.log(`Updated ${updateResults.length} documents`);
     process.exit();
 });
